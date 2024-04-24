@@ -39,33 +39,34 @@ class Circle {
         context.closePath();
     }
     update(context) {
-        //context.clearRect(0, 0, window_width, window_height);
-
+        // Borrar el círculo anterior
+        context.clearRect(this.x - this.radius - 1, this.y - this.radius - 1, this.radius * 2 + 2, this.radius * 2 + 2);
+    
+        // Dibujar el círculo con la nueva posición
         this.draw(context);
-
-        //Si el circulo supera el margen derecho entonces se mueve a la izquierda
-        if ((this.x + this.radius) > window_width) {
-            this.dx = -this.dx;
-        }
-
-        //Si el circulo supera el margen izquierdo entonces se mueve a la derecha
-        if ((this.x - this.radius) < 0) {
-            this.dx = -this.dx;
-        }
-
-        //Si el circulo supera el margen superior entonces se mueve a abajo
-        if ((this.y + this.radius) > window_height) {
-            this.dy = -this.dy;
-        }
-
-        //Si el circulo supera el margen inferior entonces se mueve a arriba
-        if ((this.y - this.radius) < 0) {
-            this.dy = -this.dy;
-        }
-
+    
+        // Actualizar la posición del círculo
         this.x += this.dx;
         this.y += this.dy;
+    
+        // Verificar y corregir la posición si el círculo se sale de los límites
+        if (this.x + this.radius >= window_width) {
+            this.x = window_width - this.radius - 1;
+            this.dx = -this.dx;
+        } else if (this.x - this.radius <= 0) {
+            this.x = this.radius + 1;
+            this.dx = -this.dx;
+        }
+    
+        if (this.y + this.radius >= window_height) {
+            this.y = window_height - this.radius - 1;
+            this.dy = -this.dy;
+        } else if (this.y - this.radius <= 0) {
+            this.y = this.radius + 1;
+            this.dy = -this.dy;
+        }
     }
+    
 }
 
 /*let arrayCircle = [];
