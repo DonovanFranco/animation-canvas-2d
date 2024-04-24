@@ -1,11 +1,11 @@
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById("canvas");
 let ctx = canvas.getContext('2d');
 
-//Obtiene las dimensiones de la pantalla actual
+//optiene las dimenciones de la pantalla actual
 const window_height = window.innerHeight;
 const window_width = window.innerWidth;
 
-//El canvas tiene las mismas dimensiones que la pantalla
+//el canvas tiene las mismas dimenciones que la pantalla
 canvas.height = window_height;
 canvas.width = window_width;
 
@@ -13,81 +13,84 @@ canvas.style.backgroundColor = '#ff8';
 
 class Circle {
     constructor(x, y, radius, color, text, speed) {
-        this.posX = x;
-        this.posY = y;
+        this.x = x;
+        this.y = y;
         this.radius = radius;
         this.color = color;
-        this.text = text; //Texto
+        this.text = text;
 
         this.speed = speed;
+
         this.dx = 1 * this.speed;
         this.dy = 1 * this.speed;
     }
     draw(context) {
         context.beginPath();
+
         context.strokeStyle = this.color;
         context.textAlign = "center";
         context.textBaseline = "middle";
-        context.font = "20px Arial";
-        context.fillText(this.text, this.posX, this.posY);
-        context.lineWidth = 3;
-        context.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2, false);
+        context.font = '20px Arial';
+        context.fillText(this.text, this.x, this.y);
+
+        context.lineWidth = 2;
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         context.stroke();
         context.closePath();
     }
-
     update(context) {
-
-        
+        //context.clearRect(0, 0, window_width, window_height);
 
         this.draw(context);
 
-        //Si el circulo supera el margen izquierdo entonces se mueve a la izquierda
-        if (this.posX + this.radius > window_width) {
+        //Si el circulo supera el margen derecho entonces se mueve a la izquierda
+        if ((this.x + this.radius) > window_width) {
             this.dx = -this.dx;
         }
 
         //Si el circulo supera el margen izquierdo entonces se mueve a la derecha
-        if (this.posX - this.radius < 0) {
+        if ((this.x - this.radius) < 0) {
             this.dx = -this.dx;
         }
 
-        //Si el circulo supera el margen izquierdo entonces se mueve a la izquierda
-        if (this.posY - this.radius < 0) {
+        //Si el circulo supera el margen superior entonces se mueve a abajo
+        if ((this.y + this.radius) > window_height) {
             this.dy = -this.dy;
         }
 
-        //Si el circulo supera el margen izquierdo entonces se mueve a la derecha
-        if (this.posY + this.radius > window_height) {
+        //Si el circulo supera el margen inferior entonces se mueve a arriba
+        if ((this.y - this.radius) < 0) {
             this.dy = -this.dy;
         }
-        this.posX += this.dx;
-        this.posY += this.dy;
+
+        this.x += this.dx;
+        this.y += this.dy;
     }
 }
 
-/*let arrayCircle=[];
+/*let arrayCircle = [];
 
-for (let i = 0; i < 10; i++) {
+ for  (let i=0; i<10; i++){
+
     let randomX = Math.random() * window_width;
     let randomY = Math.random() * window_height;
+    let randomRadius = Math.floor(Math.random() * 100 + 20);
 
-    let randomRadius = Math.floor(Math.random()*100+30);
-    let miCirculo = new Circle(randomX,randomY,randomRadius,'blue',i+1);
+    let miCirculo = new Circle(randomX, randomY, randomRadius, 'red', i+1);
 
-    //Agrega el objeto al array
+    //agrega el objeto al array
     arrayCircle.push(miCirculo);
     arrayCircle[i].draw(ctx);
 } */
 
-let randomX = Math.random() * window_width;
+/* let randomX = Math.random() * window_width;
 let randomY = Math.random() * window_height;
-let randomRadius = Math.floor(Math.random() * 100 + 30);
+let randomRadius = Math.floor(Math.random() * 100 + 20);
 
-let miCirculo = new Circle(randomX, randomY, randomRadius, 'blue', 'Tec1', 5);
+let miCirculo = new Circle(randomX, randomY, randomRadius, 'red', 'tec1', 3);
 miCirculo.draw(ctx);
 
-let miCirculo2 = new Circle(100, 100, 100, 'red', 'Tec2', 5);
+let miCirculo2 = new Circle(randomX, randomY, randomRadius, 'green', 'tec2', 5);
 miCirculo2.draw(ctx);
 
 let updateCircle = function () {
@@ -95,11 +98,31 @@ let updateCircle = function () {
     ctx.clearRect(0, 0, window_width, window_height);
     miCirculo.update(ctx);
     miCirculo2.update(ctx);
-};
+} */
+
+// Número de círculos que deseas crear
+const nCircles = 15;
+
+let circles = [];
+
+for (let i = 0; i < nCircles; i++) {
+    let randomX = Math.random() * window_width;
+    let randomY = Math.random() * window_height;
+    let randomRadius = Math.floor(Math.random() * 100 + 20);
+
+    let miCirculo = new Circle(randomX, randomY, randomRadius, 'red', 'tec' + (i + 1), 5);
+    circles.push(miCirculo);
+}
+
+let updateCircle = function () {
+    requestAnimationFrame(updateCircle);
+    ctx.clearRect(0, 0, window_width, window_height);
+    circles.forEach(circle => {
+        circle.update(ctx);
+    });
+}
 
 updateCircle();
 
-
-/*
-miCirculo2 = new Circle(270, 270,50, 'black', 'Pachuca');
+/*let miCirculo2 = new Circle(270,270,50,'green', 'pachuca');
 miCirculo2.draw(ctx); */
